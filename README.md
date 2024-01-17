@@ -1,0 +1,1 @@
+StockFlow is an inventory management product created in the SERN stack.
