@@ -1,11 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+
   const navbarStyle = {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between', // Adjusted to evenly space elements
     backgroundColor: '#555',
     padding: '10px',
   };
@@ -28,6 +31,20 @@ const Navbar = () => {
     color: 'white',
   };
 
+  const searchContainerStyle = {
+    display: 'flex',
+    alignItems: 'center',
+  };
+
+  const inputStyle = {
+    marginRight: '10px',
+  };
+
+  const handleSearch = () => {
+    // Navigate to the search page with the search query as a parameter
+    navigate(`/search?search=${searchQuery}`);
+  };
+
   return (
     <nav style={navbarStyle}>
       <ul style={listContainerStyle}>
@@ -35,6 +52,16 @@ const Navbar = () => {
         <li style={listItemStyle}><Link to="/about" style={linkStyle}>About</Link></li>
         <li style={listItemStyle}><Link to="/contact" style={linkStyle}>Contact</Link></li>
       </ul>
+      <div style={searchContainerStyle}>
+        <input
+          type="text"
+          placeholder="Search"
+          style={inputStyle}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
     </nav>
   );
 };
