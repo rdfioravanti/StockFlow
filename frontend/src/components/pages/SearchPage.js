@@ -42,7 +42,9 @@ const SearchPage = () => {
     return (
       <div>
         <Navbar />
-        <div>Loading...</div>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          Loading...
+        </div>
       </div>
     );
   }
@@ -51,7 +53,9 @@ const SearchPage = () => {
     return (
       <div>
         <Navbar />
-        <div>Error: {error}</div>
+        <div style={{ textAlign: 'center', marginTop: '20px', color: 'red', fontSize: '1.2rem' }}>
+          Error: {error}
+        </div>
       </div>
     );
   }
@@ -60,11 +64,13 @@ const SearchPage = () => {
     return (
       <div>
         <Navbar />
-        {searchQuery ? (
-          <div>No search results found</div>
-        ) : (
-          <div>No search query provided</div>
-        )}
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          {searchQuery ? (
+            <div>No search results found</div>
+          ) : (
+            <div>No search query provided</div>
+          )}
+        </div>
       </div>
     );
   }
@@ -72,33 +78,35 @@ const SearchPage = () => {
   return (
     <div>
       <Navbar />
-      <h1>Search Results for: {searchQuery}</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>SKU</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>On Hand Quantity</th>
-            <th>Last Received Date</th>
-            {/* Add more columns as needed */}
-          </tr>
-        </thead>
-        <tbody>
-          {searchResults.map(result => (
-            <tr key={result.sku}>
-              <td>{result.sku}</td>
-              <td>{result.name}</td>
-              <td>{result.description}</td>
-              <td>{result.price}</td>
-              <td>{result.onHandQuantity}</td>
-              <td>{result.lastReceivedDate}</td>
-              {/* Render more columns as needed */}
+      <div style={{ marginTop: '20px' }}>
+        <h1 style={{ textAlign: 'center' }}>Search Results for: {searchQuery}</h1>
+        <table style={{ margin: 'auto' }}>
+          <thead>
+            <tr>
+              <th style={{ paddingRight: '20px', textAlign: 'left' }}>SKU</th>
+              <th style={{ paddingRight: '20px', textAlign: 'left' }}>Name</th>
+              <th style={{ paddingRight: '20px', textAlign: 'left' }}>Description</th>
+              <th style={{ paddingRight: '20px', textAlign: 'left' }}>Price</th>
+              <th style={{ paddingRight: '20px', textAlign: 'left' }}>On Hand Quantity</th>
+              <th style={{ textAlign: 'left' }}>Last Received Date</th>
+              {/* Add more columns as needed */}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {searchResults.map(result => (
+              <tr key={result.sku}>
+                <td>{result.sku}</td>
+                <td>{result.name}</td>
+                <td>{result.description}</td>
+                <td>{result.price}</td>
+                <td>{result.onHandQuantity}</td>
+                <td>{result.lastReceivedDate}</td>
+                {/* Render more columns as needed */}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
