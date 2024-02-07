@@ -19,12 +19,24 @@ class ProductController {
   static async findBySku(sku) {
     try {
       const client = await pool.connect();
-      const query = 'SELECT * FROM product_reference WHERE sku = $1';
+      const query = `
+        SELECT pr.sku, pr.name, pr.description, pr.price, s1.on_hand_quantity, s1.last_received_date
+        FROM product_reference pr
+        LEFT JOIN store_1 s1 ON pr.sku = s1.sku
+        WHERE pr.sku = $1
+      `;
       const result = await client.query(query, [sku]);
       client.release();
 
       const products = result.rows.map(row => {
-        return new Product(row.sku, row.name, row.description, row.price, row.onHandQuantity, row.lastReceivedDate);
+        return new Product(
+          row.sku,
+          row.name,
+          row.description,
+          row.price,
+          row.on_hand_quantity,
+          row.last_received_date
+        );
       });
 
       return products;
@@ -37,12 +49,24 @@ class ProductController {
     try {
       const client = await pool.connect();
       const searchQuery = `%${query}%`; // Add wildcards for a partial match
-      const queryText = 'SELECT * FROM product_reference WHERE name ILIKE $1 OR description ILIKE $1';
+      const queryText = `
+        SELECT pr.sku, pr.name, pr.description, pr.price, s1.on_hand_quantity, s1.last_received_date
+        FROM product_reference pr
+        LEFT JOIN store_1 s1 ON pr.sku = s1.sku
+        WHERE pr.name ILIKE $1 OR pr.description ILIKE $1
+      `;
       const result = await client.query(queryText, [searchQuery]);
       client.release();
 
       const products = result.rows.map(row => {
-        return new Product(row.sku, row.name, row.description, row.price, row.onHandQuantity, row.lastReceivedDate);
+        return new Product(
+          row.sku,
+          row.name,
+          row.description,
+          row.price,
+          row.on_hand_quantity,
+          row.last_received_date
+        );
       });
 
       return products;
