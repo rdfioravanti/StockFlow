@@ -8,6 +8,9 @@ var cors = require('cors');
 var indexRouter = require('./routes/index');
 var searchRouter = require('./routes/searchRoute');
 var allItemsRouter = require('./routes/allItemsRoute');
+var createUserRouter = require('./routes/createUserRoute');
+var getAllUsersRouter = require('./routes/getAllUsersRoute');
+var getUserByEmployeeIdRouter = require('./routes/getUserByEmployeeIdRoute');
 
 var app = express();
 
@@ -25,6 +28,9 @@ app.use(cors());
 app.use('/', indexRouter);
 app.use('/', searchRouter);
 app.use('/', allItemsRouter);
+app.use('/', createUserRouter);
+app.use('/', getAllUsersRouter);
+app.use('/', getUserByEmployeeIdRouter);
 
 
 // catch 404 and forward to error handler
