@@ -5,7 +5,7 @@ const UserController = require('../controllers/userController');
 // Route to create a new user
 router.post('/users', async (req, res) => {
   try {
-    const user = req.body; // Assuming request body contains user data
+    const user = req.body;
     const newUser = await UserController.createUser(user);
     res.status(201).json(newUser);
   } catch (error) {

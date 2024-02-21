@@ -10,32 +10,43 @@ const SearchPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (searchQuery === null || searchQuery === '') {
-      setIsLoading(false);
-      setError('No search query provided');
-      return;
-    }
+    const fetchSearchResults = async () => {
+      if (searchQuery === null || searchQuery === '') {
+        setIsLoading(false);
+        setError('No search query provided');
+        return;
+      }
 
-    // Reset error state
-    setError(null);
+      // Reset error state
+      setError(null);
 
-    // Fetch search results from the backend using the search query
-    fetch(`${process.env.REACT_APP_BACKEND_URI}/search?search=${searchQuery}`)
-      .then(response => {
+      try {
+        // Retrieve JWT token from localStorage
+        const jwtToken = localStorage.getItem('idToken');
+
+        // Fetch search results from the backend using the search query
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URI}/search?search=${searchQuery}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwtToken}` // Include JWT token in the 'Authorization' header
+          }
+        });
+
         if (!response.ok) {
           throw new Error('Failed to fetch search results');
         }
-        return response.json();
-      })
-      .then(data => {
+
+        const data = await response.json();
         setSearchResults(data); // Assuming data is an array of search results
-      })
-      .catch(error => {
+      } catch (error) {
         setError(error.message);
-      })
-      .finally(() => {
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+
+    fetchSearchResults();
   }, [searchQuery]);
 
   if (isLoading) {
