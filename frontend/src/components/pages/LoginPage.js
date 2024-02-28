@@ -15,7 +15,10 @@ const LoginPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ employeeId: userID, password }),
+        body: JSON.stringify({ 
+          employeeId: userID,
+          password
+         }),
       });
       const data = await response.json();
       if (!response.ok) {

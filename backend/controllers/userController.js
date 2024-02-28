@@ -1,6 +1,6 @@
 const pool = require('../db');
 const User = require('../models/userModel');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 class UserController {
   static async getAllUsers() {
@@ -11,7 +11,7 @@ class UserController {
       client.release();
 
       const users = result.rows.map(row => {
-        return new User(row.employeeId, row.firstName, row.lastName, row.email, row.birthDate, row.password, row.privilegeLevel);
+        return new User(row.employee_id, row.first_name, row.last_name, row.email, row.birth_date, row.password, row.privilege_level);
       });
 
       return users;
@@ -19,6 +19,7 @@ class UserController {
       throw error;
     }
   }
+
 
   static async getUserByEmployeeId(employeeId) {
     try {
@@ -32,7 +33,7 @@ class UserController {
         throw new Error('User not found');
       }
 
-      const user = new User(userData.employeeId, userData.firstName, userData.lastName, userData.email, userData.birthDate, userData.password, userData.privilegeLevel);
+      const user = new User(userData.employee_id, userData.first_name, userData.last_name, userData.email, userData.birth_date, userData.password, userData.privilege_level);
 
       return user;
     } catch (error) {
@@ -48,7 +49,7 @@ class UserController {
       client.release();
   
       const userData = result.rows[0];
-      return userData ? new User(userData.employeeId, userData.firstName, userData.lastName, userData.email, userData.birthDate, userData.password, userData.privilegeLevel) : null;
+      return userData ? new User(userData.employee_id, userData.first_name, userData.last_name, userData.email, userData.birth_date, userData.password, userData.privilege_level) : null;
     } catch (error) {
       throw error;
     }
