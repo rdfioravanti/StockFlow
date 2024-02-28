@@ -10,7 +10,6 @@ router.post('/login', async (req, res) => {
 
     // Fetch user data from the database based on employee ID
     const user = await UserController.getUserByEmployeeId(employeeId);
-    console.log(user);
 
     // If user is null or undefined, throw an error
     if (!user) {
@@ -19,9 +18,6 @@ router.post('/login', async (req, res) => {
 
     // Compare passwords
     const passwordMatch = await bcrypt.compare(password, user.password);
-    console.log(password);
-    console.log(user.password);
-    console.log(passwordMatch);
 
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid credentials' }); // Incorrect password
