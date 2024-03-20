@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
+const argon2 = require('argon2');
 const UserController = require('../controllers/userController');
 const { generateToken, encryptToken } = require('../functions/tokenFunctions');
 
@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
     }
 
     // Encrypt the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await argon2.hash(password);
 
     // Create user object
     const user = {

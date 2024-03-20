@@ -19,7 +19,6 @@ const RegisterPage = () => {
     setIsLoading(true);
     
     try {
-      // Validate form data here...
   
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URI}/register`, {
         method: 'POST',

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
+const argon2 = require('argon2');
 const UserController = require('../controllers/userController');
 const { generateToken, encryptToken } = require('../functions/tokenFunctions');
 
@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Compare passwords
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await argon2.verify(user.password, password);
 
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid credentials' }); // Incorrect password

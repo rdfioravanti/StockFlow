@@ -22,15 +22,16 @@ const LoginPage = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error); // Throw error with backend error message
+        throw new Error(data.error);
       }
       // Store idToken in localStorage
-      localStorage.setItem('idToken', data.idToken);
+      localStorage.setItem('idToken', data.idToken.encryptedToken);
       // Store refreshToken as a secure session cookie
-      document.cookie = `refreshToken=${data.refreshToken}; Secure; HttpOnly`;
-      // Redirect or handle successful login
+      document.cookie = `refreshToken=${data.refreshToken.encryptedToken}; Secure; HttpOnly`;
+      // Redirect to homepage
+      window.location.href = '/homepage';
     } catch (error) {
-      setError(error.message); // Set error state with backend error message
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -60,7 +61,7 @@ const LoginPage = () => {
         </div>
         <button type="submit" disabled={isLoading} style={{ padding: '8px 16px', borderRadius: '5px', backgroundColor: '#fff', color: '#555', border: 'none' }}>Login</button>
       </form>
-      {error && <div style={{ color: 'red' }}>{error}</div>} {/* Display error message */}
+      {error && <div style={{ color: 'red' }}>{error}</div>}
     </div>
   );
 };
