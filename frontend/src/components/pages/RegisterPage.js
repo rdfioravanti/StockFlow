@@ -10,7 +10,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [birthdate, setBirthdate] = useState(new Date());
-  const [privilegeLevel, setPrivilegeLevel] = useState('');
+  const [registrationKey, setRegistrationKey] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -19,7 +19,6 @@ const RegisterPage = () => {
     setIsLoading(true);
     
     try {
-  
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URI}/register`, {
         method: 'POST',
         headers: {
@@ -31,7 +30,7 @@ const RegisterPage = () => {
           email,
           birthDate: birthdate.toISOString().split('T')[0], // Convert date to string in YYYY-MM-DD format
           password,
-          privilegeLevel
+          registrationKey // Include registration key in the request JSON
         }),
       });
   
@@ -125,15 +124,13 @@ const RegisterPage = () => {
           />
         </div>
         <div style={{ marginBottom: '10px' }}>
-          <label>Privilege Level:</label>
-          <select
-            value={privilegeLevel}
-            onChange={(e) => setPrivilegeLevel(e.target.value)}>
-            <option value="">Select Privilege Level</option>
-            <option value="employee">Employee</option>
-            <option value="manager">Manager</option>
-            <option value="admin">Admin</option>
-          </select>
+          <input
+            type="text"
+            value={registrationKey}
+            onChange={(e) => setRegistrationKey(e.target.value)}
+            placeholder="Registration Key"
+            style={{ borderRadius: '5px', padding: '8px', width: '300px', color: '#999' }}
+          />
         </div>
         <button type="submit" disabled={isLoading} style={{ padding: '8px 16px', borderRadius: '5px', backgroundColor: '#fff', color: '#555', border: 'none' }}>Register</button>
       </form>

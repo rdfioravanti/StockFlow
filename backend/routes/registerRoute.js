@@ -1,22 +1,37 @@
 const express = require('express');
-const router = express.Router();
 const argon2 = require('argon2');
+const router = express.Router();
 const UserController = require('../controllers/userController');
+const RegistrationKeyController = require('../controllers/registrationKeyController');
 const { generateToken, encryptToken } = require('../functions/tokenFunctions');
 
 router.post('/register', async (req, res) => {
   try {
-    const { firstName, lastName, email, birthDate, password, privilegeLevel } = req.body;
+    const { firstName, lastName, email, birthDate, password, registrationKey } = req.body;
 
     // Check if all required fields are present
-    if (!firstName || !lastName || !email || !birthDate || !password || !privilegeLevel) {
+    if (!firstName || !lastName || !email || !birthDate || !password || !registrationKey) {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
-    // Check if email is valid
-    if (!isValidEmail(email)) {
-      return res.status(400).json({ error: 'Invalid email address' });
+    // Check if email is valid (you can implement email validation logic here)
+
+    // Retrieve registration key information
+    const keyInfo = await RegistrationKeyController.getRegistrationKey(registrationKey);
+
+    if (!keyInfo) {
+      return res.status(400).json({ error: 'Invalid registration key' });
     }
+
+    if (keyInfo.key_used) {
+      return res.status(400).json({ error: 'Registration key has already been used' });
+    }
+
+    // Uncomment the following lines if you want to mark the key as used before creating the user
+    // await RegistrationKeyController.markKeyAsUsed(registrationKey);
+
+    // Extract privilege level from the key
+    const { privilege_level } = keyInfo;
 
     // Encrypt the password
     const hashedPassword = await argon2.hash(password);
@@ -28,7 +43,7 @@ router.post('/register', async (req, res) => {
       email,
       birthDate,
       password: hashedPassword,
-      privilegeLevel
+      privilegeLevel: privilege_level // Using the extracted privilege level from the registration key
     };
 
     // Create user in the database
@@ -44,20 +59,8 @@ router.post('/register', async (req, res) => {
     res.status(201).json({ idToken, refreshToken });
   } catch (error) {
     console.error(error); // Log the error for debugging
-    if (error.message === 'User with the same email already exists') {
-      return res.status(400).json({ error: error.message });
-    } else if (error.message === 'Invalid privilege level. Allowed values are "employee", "manager", or "admin"') {
-      return res.status(400).json({ error: error.message });
-    } else {
-      return res.status(500).json({ error: 'Internal server error' });
-    }
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-// Function to validate email format
-function isValidEmail(email) {
-  // Email validation logic here
-  return true; // Placeholder for email validation
-}
 
 module.exports = router;

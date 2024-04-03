@@ -49,8 +49,6 @@ const Navbar = () => {
     <nav style={navbarStyle}>
       <ul style={listContainerStyle}>
         <li style={listItemStyle}><Link to="/homepage" style={linkStyle}>Home</Link></li>
-        <li style={listItemStyle}><Link to="/about" style={linkStyle}>About</Link></li>
-        <li style={listItemStyle}><Link to="/contact" style={linkStyle}>Contact</Link></li>
         <li style={listItemStyle}><Link to="/profile" style={linkStyle}>Profile</Link></li>
       </ul>
       <div style={searchContainerStyle}>
