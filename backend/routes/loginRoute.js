@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Generate ID token with issuer, expiration time (1 hour), and employeeId
-    const idToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER}, '1h'));
+    const idToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER, employeeId: user.employeeId }, '1h'));
 
     // Generate refresh token with issuer and expiration time (1 week)
     const refreshToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER }, '7d'));

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, Link } from 'react-router-dom'; // Import Link from react-router-dom
 import Navbar from '../functional components/Navbar';
+import NotLoggedInPage from '../functional components/NotLoggedInPage';
 
 const SearchPage = () => {
   const location = useLocation();
@@ -23,6 +24,12 @@ const SearchPage = () => {
       try {
         // Retrieve JWT token from localStorage
         const jwtToken = localStorage.getItem('idToken');
+
+        // Check if user is logged in
+        if (!jwtToken) {
+          setIsLoading(false);
+          return;
+        }
 
         // Fetch search results from the backend using the search query
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URI}/search?search=${searchQuery}`, {
@@ -48,6 +55,10 @@ const SearchPage = () => {
 
     fetchSearchResults();
   }, [searchQuery]);
+
+  if (!localStorage.getItem('idToken')) {
+    return <NotLoggedInPage />;
+  }
 
   if (isLoading) {
     return (
@@ -106,7 +117,9 @@ const SearchPage = () => {
           <tbody>
             {searchResults.map(result => (
               <tr key={result.sku}>
-                <td>{result.sku}</td>
+                <td>
+                  <Link to={`/item/${result.sku}`}>{result.sku}</Link> {/* Make SKU clickable */}
+                </td>
                 <td>{result.name}</td>
                 <td>{result.description}</td>
                 <td>{result.price}</td>

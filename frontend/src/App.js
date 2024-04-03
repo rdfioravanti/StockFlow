@@ -4,6 +4,8 @@ import HomePage from './components/pages/HomePage';
 import SearchPage from './components/pages/SearchPage';
 import LoginPage from './components/pages/LoginPage';
 import RegisterPage from './components/pages/RegisterPage';
+import ProfilePage from './components/pages/ProfilePage';
+import ItemPage from './components/pages/ItemPage';
 
 const App = () => {
   return (
@@ -13,9 +15,11 @@ const App = () => {
         <Route path="/homepage" element={<HomePage />} />
         {/* Redirect only when the user enters the root URL */}
         <Route path="/" element={<Navigate to="/homepage" />} />
-        <Route path="/search" element = {<SearchPage />} />
-        <Route path="/login" element = {<LoginPage />} />
-        <Route path="/register" element = {<RegisterPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/item/:sku" element={<ItemPage />} />
       </Routes>
     </Router>
   );

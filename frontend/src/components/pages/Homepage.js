@@ -1,7 +1,12 @@
 import React from 'react';
 import Navbar from '../functional components/Navbar'; 
+import NotLoggedInPage from '../functional components/NotLoggedInPage'; // Importing the NotLoggedInPage component
 
 const HomePage = () => {
+  if (!localStorage.getItem('idToken')) {
+    return <NotLoggedInPage />;
+  }
+
   return (
     <div>
       <Navbar />
