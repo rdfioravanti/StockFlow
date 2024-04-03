@@ -50,10 +50,10 @@ router.post('/register', async (req, res) => {
     const newUser = await UserController.createUser(user);
 
     // Generate ID token with issuer, expiration time (1 hour), and employeeId
-    const idToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER, employeeId: newUser.employeeId }, '1h'));
+    const idToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER, uniqueId: global.uniqueId, employeeId: newUser.employeeId }, '1h')); // Including the uniqueId in the idToken
 
     // Generate refresh token with issuer and expiration time (1 week)
-    const refreshToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER }, '7d'));
+    const refreshToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER, uniqueId: global.uniqueId }, '7d')); // Including the uniqueId in the refreshToken
 
     // Send tokens to the frontend
     res.status(201).json({ idToken, refreshToken });

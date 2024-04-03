@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom'; // Import Link from react-router-dom
 import Navbar from '../functional components/Navbar';
-import NotLoggedInPage from '../functional components/NotLoggedInPage';
+import NotLoggedInPage from '../functional components/NotLoggedInRender';
 
 const SearchPage = () => {
   const location = useLocation();

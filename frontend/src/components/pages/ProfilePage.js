@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../functional components/Navbar';
-import NotLoggedInPage from '../functional components/NotLoggedInPage'; // Importing the NotLoggedInPage component
+import NotLoggedInPage from '../functional components/NotLoggedInRender'; // Importing the NotLoggedInPage component
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);

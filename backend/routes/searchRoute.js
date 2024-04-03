@@ -19,6 +19,8 @@ router.get('/search', async (req, res) => {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
+    console.log(global.uniqueId);
+
     // If authentication is successful, proceed to search for items
     const { search } = req.query;
     if (!search) {
