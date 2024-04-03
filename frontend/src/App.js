@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import HomePage from './components/pages/HomePage';
 import SearchPage from './components/pages/SearchPage';
 import LoginPage from './components/pages/LoginPage';
 import RegisterPage from './components/pages/RegisterPage';
 import ProfilePage from './components/pages/ProfilePage';
 import ItemPage from './components/pages/ItemPage';
+import HomePage from './components/pages/HomePage';
 
 const App = () => {
   return (
