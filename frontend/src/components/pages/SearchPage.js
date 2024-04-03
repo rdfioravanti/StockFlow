@@ -47,6 +47,9 @@ const SearchPage = () => {
             // Call refreshTokens function
             try {
               await refreshTokens();
+            } catch (refreshError) {
+              throw new Error('Failed to refresh tokens');
+            }
               // Retry fetching search results after token refresh
               const refreshedResponse = await fetch(`${process.env.REACT_APP_BACKEND_URI}/search?search=${searchQuery}`, {
                 method: 'GET',
@@ -61,10 +64,7 @@ const SearchPage = () => {
               const refreshedData = await refreshedResponse.json();
               setSearchResults(refreshedData);
               return;
-            } catch (refreshError) {
-              throw new Error('Failed to refresh tokens');
             }
-          }
           throw new Error('Failed to fetch search results');
         }
   
