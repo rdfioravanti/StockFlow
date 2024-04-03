@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom'; // Import Link from react-router-dom
 import Navbar from '../functional components/Navbar';
 import NotLoggedInPage from '../functional components/NotLoggedInRender';
+import { refreshTokens } from '../functions/RefreshFunction'; // Import the function
 
 const SearchPage = () => {
   const location = useLocation();
@@ -17,20 +18,20 @@ const SearchPage = () => {
         setError('No search query provided');
         return;
       }
-
+  
       // Reset error state
       setError(null);
-
+  
       try {
         // Retrieve JWT token from localStorage
         const jwtToken = localStorage.getItem('idToken');
-
+  
         // Check if user is logged in
         if (!jwtToken) {
           setIsLoading(false);
           return;
         }
-
+  
         // Fetch search results from the backend using the search query
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URI}/search?search=${searchQuery}`, {
           method: 'GET',
@@ -39,11 +40,34 @@ const SearchPage = () => {
             'Authorization': `Bearer ${jwtToken}` // Include JWT token in the 'Authorization' header
           }
         });
-
+  
         if (!response.ok) {
+          // Check if response status is 401 (Unauthorized)
+          if (response.status === 402) {
+            // Call refreshTokens function
+            try {
+              await refreshTokens();
+              // Retry fetching search results after token refresh
+              const refreshedResponse = await fetch(`${process.env.REACT_APP_BACKEND_URI}/search?search=${searchQuery}`, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('idToken')}` // Include the refreshed JWT token
+                }
+              });
+              if (!refreshedResponse.ok) {
+                throw new Error('Failed to fetch search results after token refresh');
+              }
+              const refreshedData = await refreshedResponse.json();
+              setSearchResults(refreshedData);
+              return;
+            } catch (refreshError) {
+              throw new Error('Failed to refresh tokens');
+            }
+          }
           throw new Error('Failed to fetch search results');
         }
-
+  
         const data = await response.json();
         setSearchResults(data); // Assuming data is an array of search results
       } catch (error) {
@@ -52,9 +76,10 @@ const SearchPage = () => {
         setIsLoading(false);
       }
     };
-
+  
+    // Call fetchSearchResults initially and whenever searchQuery changes
     fetchSearchResults();
-  }, [searchQuery]);
+  }, [searchQuery]); // Dependency array for useEffect  
 
   if (!localStorage.getItem('idToken')) {
     return <NotLoggedInPage />;

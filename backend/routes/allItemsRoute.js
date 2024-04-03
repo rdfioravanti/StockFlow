@@ -13,10 +13,13 @@ router.get('/items', async (req, res) => {
     }
     const token = authHeader.split(' ')[1];
 
-    // Verify JWT token
-    const decodedToken = verifyToken(token);
-    if (!decodedToken) {
-      return res.status(401).json({ error: 'Unauthorized' });
+    let decodedToken;
+    try {
+      // Verify JWT token
+      decodedToken = verifyToken(token);
+    } catch (verificationError) {
+      console.error('Error verifying token:', verificationError);
+      return res.status(402).json({ error: 'Unauthorized' });
     }
 
     // If authentication is successful, proceed to get all items

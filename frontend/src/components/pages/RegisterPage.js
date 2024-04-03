@@ -44,7 +44,7 @@ const RegisterPage = () => {
       localStorage.setItem('idToken', data.idToken.encryptedToken);
   
       // Save refreshToken as a secure session cookie
-      document.cookie = `refreshToken=${data.refreshToken.encryptedToken}; Secure; HttpOnly`;
+      document.cookie = `refreshToken=${data.refreshToken.encryptedToken}; Secure; SameSite=None`;
   
       // Redirect to homepage
       window.location.href = '/homepage';

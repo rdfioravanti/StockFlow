@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from '../functional components/Navbar';
 import NotLoggedInPage from '../functional components/NotLoggedInRender'; // Importing the NotLoggedInPage component
+import { refreshTokens } from '../functions/RefreshFunction'; // Import the function
 
 const ItemPage = () => {
   const { sku } = useParams();
@@ -32,6 +33,29 @@ const ItemPage = () => {
         });
     
         if (!response.ok) {
+          // Check if response status is 402 (Unauthorized)
+          if (response.status === 402) {
+            // Call refreshTokens function
+            try {
+              await refreshTokens();
+            } catch (refreshError) {
+              throw new Error('Failed to refresh tokens');
+            }
+            // Retry fetching item data after token refresh
+            const refreshedResponse = await fetch(`${process.env.REACT_APP_BACKEND_URI}/item/${sku}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('idToken')}` // Include the refreshed JWT token
+              }
+            });
+            if (!refreshedResponse.ok) {
+              throw new Error('Failed to fetch item details after token refresh');
+            }
+            const refreshedData = await refreshedResponse.json();
+            setItem(refreshedData[0]);
+            return;
+          }
           throw new Error('Failed to fetch item details');
         }
     

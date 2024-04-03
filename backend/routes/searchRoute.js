@@ -13,19 +13,21 @@ router.get('/search', async (req, res) => {
     }
     const token = authHeader.split(' ')[1];
 
-    // Verify JWT token
-    const decodedToken = verifyToken(token);
-    if (!decodedToken) {
-      return res.status(401).json({ error: 'Unauthorized' });
+    try {
+      // Verify JWT token
+      const decodedToken = verifyToken(token);
+    } catch (error) {
+      // Send 402 status if there's an error in token verification
+      console.error('Error verifying token:', error);
+      return res.status(402).json({ error: 'Unauthorized' });
     }
 
-    console.log(global.uniqueId);
-
-    // If authentication is successful, proceed to search for items
+    // Proceed to search for items
     const { search } = req.query;
     if (!search) {
       return res.status(400).json({ error: 'Search query is required' });
     }
+
     const items = await ProductController.searchItems(search);
     return res.json(items);
   } catch (error) {

@@ -27,7 +27,7 @@ const LoginPage = () => {
       // Store idToken in localStorage
       localStorage.setItem('idToken', data.idToken.encryptedToken);
       // Store refreshToken as a secure session cookie
-      document.cookie = `refreshToken=${data.refreshToken.encryptedToken}; Secure; HttpOnly`;
+      document.cookie = `refreshToken=${data.refreshToken.encryptedToken}; Secure; SameSite=None`;
       // Redirect to homepage
       window.location.href = '/homepage';
     } catch (error) {
