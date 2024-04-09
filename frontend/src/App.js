@@ -6,6 +6,8 @@ import LoginPage from './components/pages/LoginPage';
 import RegisterPage from './components/pages/RegisterPage';
 import ProfilePage from './components/pages/ProfilePage';
 import ItemPage from './components/pages/ItemPage';
+import InventoryAdjustmentPage from './components/pages/InventoryAdjustmentPage';
+import AboutPage from './components/pages/AboutPage';
 
 const App = () => {
   return (
@@ -20,6 +22,8 @@ const App = () => {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/item/:sku" element={<ItemPage />} />
+        <Route path="/adjustment" element={<InventoryAdjustmentPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </Router>
   );

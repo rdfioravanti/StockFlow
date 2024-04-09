@@ -33,7 +33,7 @@ router.post('/refresh', async (req, res) => {
     const employeeId = decodedIdToken.employeeId;
 
     // Generate new idToken with the same fields except for the expiration time
-    const newIdToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER, uniqueId: global.uniqueId, employeeId }, '1m'));
+    const newIdToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER, uniqueId: global.uniqueId, employeeId }, '1h'));
 
     // Extract fields from the decryptedRefreshToken
     const refreshTokenExpiration = decodedRefreshToken.exp;

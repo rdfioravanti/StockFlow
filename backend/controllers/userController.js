@@ -78,7 +78,7 @@ class UserController {
         throw new Error('Failed to create user');
       }
 
-      return new User(newUser.employeeId, newUser.firstName, newUser.lastName, newUser.email, newUser.birthDate, newUser.password, newUser.privilegeLevel);
+      return new User(newUser.employee_id, newUser.first_name, newUser.last_name, newUser.email, newUser.birth_date, newUser.password, newUser.privilege_level);
     } catch (error) {
       throw error;
     }
