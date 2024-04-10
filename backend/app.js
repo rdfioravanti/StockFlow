@@ -17,6 +17,9 @@ var registerRouter = require('./routes/registerRoute');
 var getUserByEmployeeIdRouter = require('./routes/getUserByEmployeeIdRoute');
 var tokenRefreshRouter = require('./routes/tokenRefreshRoute');
 
+// Import the logRequest middleware
+var logRequest = require('./custom_middleware/logMiddleware');
+
 var app = express();
 global.uniqueId = generateUniqueId();
 global.tokenBlacklist = new Set(); // Initialize the tokenBlacklist global set
@@ -31,6 +34,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+
+// Use the logRequest middleware for logging
+app.use(logRequest);
 
 app.use('/', indexRouter);
 app.use('/', searchRouter);
