@@ -1,9 +1,18 @@
 import React from 'react';
 import Navbar from '../functional components/Navbar';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import NotLoggedInPage from '../functional components/NotLoggedInRender'; // Importing the NotLoggedInPage component
 
 const AdminFunctionsPage = () => {
   const privilegeLevel = localStorage.getItem('privilegeLevel');
+
+  if (!localStorage.getItem('idToken')) {
+    return <NotLoggedInPage />;
+  }
+
+  if (privilegeLevel === 'manager') {
+    return <Navigate to="/manager" />;
+  }
 
   if (privilegeLevel !== 'admin') {
     return (
@@ -18,8 +27,12 @@ const AdminFunctionsPage = () => {
     <div>
       <Navbar />
       <div style={{ padding: '20px' }}>
-        <h2>Admin Functions Page</h2>
-        {/* Add admin functions */}
+        <h2>Admin Functions</h2>
+        <ul>
+          <li><Link to="/adjustment">Inventory Adjustment</Link></li>
+          <li><Link to="/userManagement">User Management</Link></li>
+          {/* Add more admin functions as needed */}
+        </ul>
       </div>
     </div>
   );

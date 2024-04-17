@@ -10,6 +10,7 @@ import InventoryAdjustmentPage from './components/pages/InventoryAdjustmentPage'
 import AboutPage from './components/pages/AboutPage';
 import ManagerFunctionsPage from './components/pages/ManagerFunctionsPage';
 import AdminFunctionsPage from './components/pages/AdminFunctionsPage';
+import UserManagementPage from './components/pages/UserManagementPage';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/manager" element={<ManagerFunctionsPage />} />
         <Route path="/admin" element={<AdminFunctionsPage />} />
+        <Route path="/userManagement" element={<UserManagementPage />} />
       </Routes>
     </Router>
   );
