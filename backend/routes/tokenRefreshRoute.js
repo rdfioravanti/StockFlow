@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const UserController = require('../controllers/userController');
 const { decryptToken, verifyToken } = require('../functions/tokenValidationFunctions');
 const { generateToken, encryptToken } = require('../functions/tokenFunctions');
 
@@ -32,6 +33,9 @@ router.post('/refresh', async (req, res) => {
     // Extract fields from the decryptedIdToken
     const employeeId = decodedIdToken.employeeId;
 
+    // Get user info from database for privilege level
+    const user = await UserController.getUserByEmployeeId(employeeId);
+
     // Generate new idToken with the same fields except for the expiration time
     const newIdToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER, uniqueId: global.uniqueId, employeeId }, '1h'));
 
@@ -45,7 +49,7 @@ router.post('/refresh', async (req, res) => {
     global.tokenBlacklist.add(refreshToken);
 
     // Send new tokens to the frontend
-    res.json({ idToken: newIdToken, refreshToken: newRefreshToken });
+    res.json({ idToken: newIdToken, refreshToken: newRefreshToken, privilegeLevel: user.privilegeLevel });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Internal server error' });

@@ -24,6 +24,8 @@ const refreshTokens = async () => {
     if (data.idToken && data.refreshToken) {
       // Update the tokens in localStorage and cookies
       localStorage.setItem('idToken', data.idToken.encryptedToken);
+      // Store privilegeLevel in localStorage
+      localStorage.setItem('privilegeLevel', data.privilegeLevel);
       document.cookie = `refreshToken=${data.refreshToken.encryptedToken}; Secure; SameSite=None`;
       console.log('Tokens refreshed successfully');
     } else {
@@ -35,6 +37,7 @@ const refreshTokens = async () => {
     
     // Delete the old tokens from localStorage and cookies
     localStorage.removeItem('idToken');
+    localStorage.removeItem('privilegeLevel');
     document.cookie = 'refreshToken=; Max-Age=0; Secure; SameSite=None';
 
     // Handle error, e.g., redirect to login page or display error message

@@ -42,7 +42,8 @@ const RegisterPage = () => {
   
       // Save idToken in localStorage
       localStorage.setItem('idToken', data.idToken.encryptedToken);
-  
+      // Store privilegeLevel in localStorage
+      localStorage.setItem('privilegeLevel', data.privilegeLevel);
       // Save refreshToken as a secure session cookie
       document.cookie = `refreshToken=${data.refreshToken.encryptedToken}; Secure; SameSite=None`;
   

@@ -55,8 +55,8 @@ router.post('/register', async (req, res) => {
     // Generate refresh token with issuer and expiration time (1 week)
     const refreshToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER, uniqueId: global.uniqueId }, '7d')); // Including the uniqueId in the refreshToken
 
-    // Send tokens to the frontend
-    res.status(201).json({ idToken, refreshToken });
+    // Send tokens and privilegeLevel to the frontend
+    res.status(201).json({ idToken, refreshToken, privilegeLevel: newUser.privilegeLevel });
   } catch (error) {
     console.error(error); // Log the error for debugging
     return res.status(500).json({ error: 'Internal server error' });

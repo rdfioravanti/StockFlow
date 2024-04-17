@@ -74,6 +74,43 @@ class ProductController {
       throw error;
     }
   }
+
+  static async adjustQuantityBySku(sku, quantity, isAddition) {
+    try {
+        const client = await pool.connect();
+
+        // Retrieve the current quantity of the product
+        const currentQuantityQuery = `
+            SELECT on_hand_quantity FROM store_1 WHERE sku = $1
+        `;
+        const currentQuantityResult = await client.query(currentQuantityQuery, [sku]);
+        const currentQuantity = currentQuantityResult.rows[0].on_hand_quantity;
+
+        // Calculate the new quantity based on the adjustment
+        let newQuantity;
+        if (isAddition) {
+            newQuantity = currentQuantity + quantity;
+        } else {
+            newQuantity = currentQuantity - quantity;
+        }
+
+        // Ensure the new quantity is not negative
+        if (newQuantity < 0) {
+            throw new Error('Adjustment would result in negative quantity');
+        }
+
+        // Update the quantity in the database
+        const updateQuery = `
+            UPDATE store_1 SET on_hand_quantity = $1 WHERE sku = $2
+        `;
+        await client.query(updateQuery, [newQuantity, sku]);
+        client.release();
+
+        return newQuantity;
+    } catch (error) {
+        throw error;
+    }
+  }
 }
 
 module.exports = ProductController;

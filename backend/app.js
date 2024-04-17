@@ -17,6 +17,7 @@ var registerRouter = require('./routes/registerRoute');
 var getUserByEmployeeIdRouter = require('./routes/getUserByEmployeeIdRoute');
 var tokenRefreshRouter = require('./routes/tokenRefreshRoute');
 var createRegistrationKeyRouter = require('./routes/createRegistrationKeyRoute');
+var itemQuantityAdjustRouter = require('./routes/itemQuantityAdjustRoute');
 
 // Import the logRequest middleware
 var logRequest = require('./custom_middleware/logMiddleware');
@@ -48,6 +49,7 @@ app.use('/', registerRouter);
 app.use('/', getUserByEmployeeIdRouter);
 app.use('/', tokenRefreshRouter);
 app.use('/', createRegistrationKeyRouter);
+app.use('/', itemQuantityAdjustRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

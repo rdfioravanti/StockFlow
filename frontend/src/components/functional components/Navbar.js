@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+  const privilegeLevel = localStorage.getItem('privilegeLevel');
 
   const navbarStyle = {
     display: 'flex',
@@ -47,7 +48,8 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('idToken');
-    document.cookie = 'refreshToken=; Max-Age=0; Secure; SameSite=None';
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('privilegeLevel');
     window.location.reload();
   };
 
@@ -58,6 +60,12 @@ const Navbar = () => {
         <li style={listItemStyle}><Link to="/about" style={linkStyle}>About</Link></li>
         <li style={listItemStyle}><Link to="/adjustment" style={linkStyle}>Inventory Adjustment</Link></li>
         <li style={listItemStyle}><Link to="/profile" style={linkStyle}>Profile</Link></li>
+        {privilegeLevel === 'manager' && (
+          <li style={listItemStyle}><Link to="/manager" style={linkStyle}>Manager Functions</Link></li>
+        )}
+        {privilegeLevel === 'admin' && (
+          <li style={listItemStyle}><Link to="/admin" style={linkStyle}>Admin Functions</Link></li>
+        )}
         <li style={listItemStyle} onClick={handleLogout}><span style={linkStyle}>Log Out</span></li>
       </ul>
       <div style={searchContainerStyle}>

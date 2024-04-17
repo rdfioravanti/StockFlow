@@ -30,7 +30,7 @@ router.post('/login', async (req, res) => {
     const refreshToken = encryptToken(generateToken({ iss: process.env.JWT_ISSUER, uniqueId: global.uniqueId }, '7d')); // Including the uniqueId in the refreshToken
 
     // Send tokens to the frontend
-    res.json({ idToken, refreshToken });
+    res.json({ idToken, refreshToken, privilegeLevel: user.privilegeLevel });
   } catch (error) {
     if (error.message === 'User not found') {
       return res.status(401).json({ error: 'Invalid credentials' });
