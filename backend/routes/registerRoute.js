@@ -28,7 +28,7 @@ router.post('/register', async (req, res) => {
     }
 
     // Uncomment the following lines if you want to mark the key as used before creating the user
-    // await RegistrationKeyController.markKeyAsUsed(registrationKey);
+    await RegistrationKeyController.markKeyAsUsed(registrationKey);
 
     // Extract privilege level from the key
     const { privilege_level } = keyInfo;

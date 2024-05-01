@@ -57,7 +57,7 @@ class RegistrationKeyController {
 
     try {
       // Generate a random 25-digit alphanumeric key
-      const key = generateRandomKey(25);
+      const key = this.generateRandomKey(25);
       
       // Insert the generated key into the database
       const client = await pool.connect();
