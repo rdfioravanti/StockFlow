@@ -94,18 +94,24 @@ const ProfilePage = () => {
     );
   }
 
+  // Function to format the date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   return (
     <div>
       <Navbar />
       <div style={{ marginTop: '20px' }}>
         <h1 style={{ textAlign: 'center' }}>Profile</h1>
         <div style={{ margin: 'auto', width: '50%' }}>
-          <p><strong>Employee ID:</strong> {user.employeeId}</p>
-          <p><strong>First Name:</strong> {user.firstName}</p>
-          <p><strong>Last Name:</strong> {user.lastName}</p>
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Birth Date:</strong> {user.birthDate}</p>
-          <p><strong>Privilege Level:</strong> {user.privilegeLevel}</p>
+          <p><strong style={{fontSize: '1.2rem'}}>Employee ID:</strong> {user.employeeId}</p>
+          <p><strong style={{fontSize: '1.2rem'}}>First Name:</strong> {user.firstName}</p>
+          <p><strong style={{fontSize: '1.2rem'}}>Last Name:</strong> {user.lastName}</p>
+          <p><strong style={{fontSize: '1.2rem'}}>Email:</strong> {user.email}</p>
+          <p><strong style={{fontSize: '1.2rem'}}>Birth Date:</strong> {formatDate(user.birthDate)}</p>
+          <p><strong style={{fontSize: '1.2rem'}}>Privilege Level:</strong> {user.privilegeLevel}</p>
         </div>
       </div>
     </div>
